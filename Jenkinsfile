@@ -68,5 +68,19 @@ pipeline {
                     }
                }
           }
+
+          stage('Build') {
+               steps {
+                    script {
+                         echo "Realizando el build."
+                         def buildResult = bat script: 'npm run build', returnStatus: true
+
+                         if (buildResult != 0) {
+                              error "El proceso de build falló."
+                         }
+                         echo "Build realizada correctamente."
+                    }
+               }
+          }
      }
 }
