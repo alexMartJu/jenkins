@@ -82,5 +82,22 @@ pipeline {
                     }
                }
           }
+
+          stage('Update_Readme') {
+               steps {
+                    script {
+                         def testResult = readFile('test_result.txt').trim()
+
+                         echo "Actualizando el README.md con el resultado de los tests (${testResult})..."
+
+                         bat """
+                         echo "Ejecutando el script updateReadme.js con TEST_RESULT=${testResult}..."
+                         node ./jenkinsScripts/updateReadme.js ${testResult}
+                         """
+
+                         writeFile file: 'update_readme_result.txt', text: 'Correcto'
+                    }
+               }
+          }
      }
 }
