@@ -42,10 +42,10 @@ pipeline {
                          def lintResult = bat script: 'npx eslint .', returnStatus: true
 
                          if (lintResult != 0) {
-                              writeFile file: 'linter_result.txt', text: 'failure'
+                              writeFile file: 'linter_result.txt', text: 'Error'
                               error "Se encontraron errores en el linter."
                          } else {
-                              writeFile file: 'linter_result.txt', text: 'success'
+                              writeFile file: 'linter_result.txt', text: 'Correcto'
                          }
                          echo "Linter ejecutado correctamente."
                     }
@@ -59,10 +59,10 @@ pipeline {
                          def testResult = bat(script: 'npm test', returnStatus: true)
 
                          if (testResult != 0) {
-                              writeFile file: 'test_result.txt', text: 'failure'
+                              writeFile file: 'test_result.txt', text: 'Error'
                               error "Se encontraron errores en los tests."
                          } else {
-                              writeFile file: 'test_result.txt', text: 'success'
+                              writeFile file: 'test_result.txt', text: 'Correcto'
                          }
                          echo "Todos los tests pasaron correctamente."
                     }
@@ -117,10 +117,10 @@ pipeline {
                                    returnStatus: true
                               )
                               if (deployResult != 0) {
-                                   writeFile file: 'deploy_to_vercel_result.txt', text: 'failure'
+                                   writeFile file: 'deploy_to_vercel_result.txt', text: 'Error'
                                    error "El despliegue en Vercel falló."
                               } else {
-                                   writeFile file: 'deploy_to_vercel_result.txt', text: 'success'
+                                   writeFile file: 'deploy_to_vercel_result.txt', text: 'Correcto'
                               }
                          }
                     }
