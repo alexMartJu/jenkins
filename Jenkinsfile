@@ -51,5 +51,22 @@ pipeline {
                     }
                }
           }
+
+          stage('Test') {
+               steps {
+                    script {
+                         echo "Ejecutando tests en Jest"
+                         def testResult = bat(script: 'npm test', returnStatus: true)
+
+                         if (testResult != 0) {
+                              writeFile file: 'test_result.txt', text: 'Error'
+                              error "Se encontraron errores en los tests."
+                         } else {
+                              writeFile file: 'test_result.txt', text: 'Correcto'
+                         }
+                         echo "Todos los tests pasaron correctamente."
+                    }
+               }
+          }
      }
 }
