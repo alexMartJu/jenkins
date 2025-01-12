@@ -108,7 +108,7 @@ pipeline {
                }
                steps {
                     script {
-                         withCredentials([string(credentialsId: 'vercel-deploy-token', variable: 'VERCEL_TOKEN')]) {
+                         withCredentials([string(credentialsId: 'VERCEL_TOKEN', variable: 'VERCEL_TOKEN')]) {
                               echo "Iniciando el despliegue en Vercel"
                               def deployResult = bat(
                                    script: """
