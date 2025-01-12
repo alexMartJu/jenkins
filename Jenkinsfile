@@ -99,5 +99,32 @@ pipeline {
                     }
                }
           }
+
+          stage('Vercel') {
+               when {
+                    expression {
+                         currentBuild.result == null || currentBuild.result == 'SUCCESS'
+                    }
+               }
+               steps {
+                    script {
+                         withCredentials([string(credentialsId: 'vercel-deploy-token', variable: 'VERCEL_TOKEN')]) {
+                              echo "Iniciando el despliegue en Vercel"
+                              def deployResult = bat(
+                                   script: """
+                                   call jenkinsScripts\\deployToVercel.bat %VERCEL_TOKEN%
+                                   """,
+                                   returnStatus: true
+                              )
+                              if (deployResult != 0) {
+                                   writeFile file: 'deploy_to_vercel_result.txt', text: 'Error'
+                                   error "El despliegue en Vercel falló."
+                              } else {
+                                   writeFile file: 'deploy_to_vercel_result.txt', text: 'Correcto'
+                              }
+                         }
+                    }
+               }
+          }
      }
 }
