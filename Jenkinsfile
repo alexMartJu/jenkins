@@ -34,5 +34,22 @@ pipeline {
                     }
                }
           }
+
+          stage('Linter') {
+               steps {
+                    script {
+                         echo "Ejecutando ESLINT"
+                         def lintResult = bat script: 'npx eslint .', returnStatus: true
+
+                         if (lintResult != 0) {
+                              writeFile file: 'linter_result.txt', text: 'Error'
+                              error "Se encontraron errores en el linter."
+                         } else {
+                              writeFile file: 'linter_result.txt', text: 'Correcto'
+                         }
+                         echo "Linter ejecutado correctamente."
+                    }
+               }
+          }
      }
 }
